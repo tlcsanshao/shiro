@@ -1,0 +1,33 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.3.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.sanshao'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+ext{
+	shiroVersion = '1.3.1'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation "org.apache.shiro:shiro-web:${shiroVersion}"
+	implementation "org.apache.shiro:shiro-core:${shiroVersion}"
+	implementation "org.apache.shiro:shiro-spring:${shiroVersion}"
+	implementation "org.apache.shiro:shiro-ehcache:${shiroVersion}"
+	
+	implementation "org.springframework.boot:spring-boot-starter-jdbc"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation "mysql:mysql-connector-java"
+	
+	
+}
