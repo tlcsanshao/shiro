@@ -19,7 +19,7 @@ public class SimpleTokenFilter extends AccessControlFilter {
         //获取访问的url
         String url = getPathWithinApplication(request);
         System.out.println("simple url=" + url);
-        if(subject.getPrincipal() == null){
+        if(subject.isAuthenticated() == false){
             System.out.println("you need to login first");
 
 //          response.getWriter().append("you need to login first");
@@ -29,8 +29,6 @@ public class SimpleTokenFilter extends AccessControlFilter {
             return false;
         }
 
-        System.out.println("simple username="+subject.getPrincipal().toString());
-        System.out.println("getSessionId=" + subject.getSession().getId());
 
         return true;
 

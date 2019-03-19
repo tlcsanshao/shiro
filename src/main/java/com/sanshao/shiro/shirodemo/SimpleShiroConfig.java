@@ -56,10 +56,11 @@ public class SimpleShiroConfig {
         //配置realm
         securityManager.setRealm(simpleShiroRealm());
 
-        //注入緩存管理器 如果不加入此注入，會選擇默認的配置
+        //注入緩存管理器。授权的缓存保存在这里。
         securityManager.setCacheManager(ehCacheManager());
 
-        //注入Session管理器
+        //注入Session管理器。可以设置session的存活时间等等。
+        //session的缓存放在后续的sessionDao中。所以ecache会有两个选项。
         securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
     }
@@ -75,6 +76,7 @@ public class SimpleShiroConfig {
         return simpleShiroRealm;
     }
 
+    //引入注解
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
@@ -95,11 +97,16 @@ public class SimpleShiroConfig {
         DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
         defaultWebSessionManager.setSessionIdUrlRewritingEnabled(false);
         defaultWebSessionManager.setGlobalSessionTimeout(30*60*1000);
+        defaultWebSessionManager.setDeleteInvalidSessions(true);
         defaultWebSessionManager.setSessionDAO(enterpriseCacheSessionDAO());
         return defaultWebSessionManager;
     }
 
-    //初始化SessionDao。使用ehcache
+    /**
+     * 注入此DAO，可以用来获取所有用户的session。
+     * 我们在这里通过另外一个ecache来保存session信息。
+     * @return
+     */
     @Bean
     public EnterpriseCacheSessionDAO enterpriseCacheSessionDAO() {
         EnterpriseCacheSessionDAO enterpriseCacheSessionDAO = new EnterpriseCacheSessionDAO();

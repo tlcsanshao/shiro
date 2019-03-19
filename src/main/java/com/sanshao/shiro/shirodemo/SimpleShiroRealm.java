@@ -4,6 +4,7 @@ import com.sanshao.shiro.bean.auth.Permission;
 import com.sanshao.shiro.bean.auth.Role;
 import com.sanshao.shiro.bean.auth.User;
 import com.sanshao.shiro.repository.auth.UserRepository;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
@@ -93,6 +94,14 @@ public class SimpleShiroRealm extends AuthorizingRealm {
         simpleAuthorizationInfo.setStringPermissions(permissionNames);
 
         return simpleAuthorizationInfo;
+    }
+
+    /**
+     * 清空缓存。如果用户修改了权限，调用此方法清空缓存。
+     */
+    public void clearCached() {
+        PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
+        super.clearCache(principals);
     }
 
 

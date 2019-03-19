@@ -69,6 +69,13 @@ public class InitDb implements CommandLineRunner {
         user.setRoles(roles);
         userRepository.save(user);
 
+
+        user =  new User();
+        user.setUsername("sanshao");
+        user.setPassword(Util.getEncryptedPassword("sanshao","123456"));
+        user.setRoles(roles);
+        userRepository.save(user);
+
     }
 
 
